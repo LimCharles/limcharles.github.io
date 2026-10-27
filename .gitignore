@@ -1,0 +1,10 @@
+# local secrets and tool state
+.dev.vars
+.wrangler/
+.claude/
+node_modules/
+.DS_Store
+
+# design explorations, kept local
+design/
+__pycache__/

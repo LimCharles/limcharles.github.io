@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>What is Charles up to?</title>
+<meta name="description" content="Charles Lim, AI engineer in Singapore. Ask anything about him.">
+<link rel="canonical" href="https://whatischarlesupto.com/">
+<meta property="og:title" content="What is Charles up to?">
+<meta property="og:description" content="Charles Lim, AI engineer in Singapore. Ask anything about him.">
+<meta property="og:url" content="https://whatischarlesupto.com/">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='%23F48FB7'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<script src="/assets/vendor/brush-2.2.3.js" defer></script>
+<script src="/assets/marks.js" defer></script>
+<script src="/assets/chat.js" defer></script>
+</head>
+<body>
+<div class="blob blob-1" aria-hidden="true"></div>
+<div class="blob blob-2" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="name" href="/">charles lim</a>
+  <nav><a href="/" aria-current="page">ask</a><a href="/projects/">projects</a></nav>
+</header>
+
+<main class="stage">
+  <h1 class="sr-only">What is Charles up to?</h1>
+  <div class="thread" id="thread" aria-live="polite"></div>
+  <div class="suggest" id="suggest" aria-label="Suggested questions"></div>
+  <form class="ask" id="ask">
+    <label class="sr-only" for="q">Ask anything about Charles</label>
+    <textarea id="q" rows="1" placeholder="ask about charles" autocomplete="off" enterkeyhint="send"></textarea>
+    <button type="submit" aria-label="Ask" disabled>↑</button>
+  </form>
+</main>
+</body>
+</html>
