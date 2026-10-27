@@ -5,6 +5,10 @@
 //   GEMINI_API_KEY     secret, from Google AI Studio (free tier is enough)
 //   FILE_SEARCH_STORE  e.g. fileSearchStores/abc123, printed by scripts/upload-corpus.mjs
 //   GEMINI_MODEL       optional, defaults to gemini-3.5-flash-lite
+//
+// On whatischarlesupto.com, /api/* is served by the same handler running as a Worker
+// (workers/gemini-proxy), pinned near a US Google region, because Gemini rejects some
+// Cloudflare data centres such as Hong Kong. This Pages Function still serves *.pages.dev.
 
 const API = 'https://generativelanguage.googleapis.com/v1beta/interactions';
 

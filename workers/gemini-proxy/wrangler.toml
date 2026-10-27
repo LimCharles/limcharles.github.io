@@ -1,0 +1,16 @@
+# Serves whatischarlesupto.com/api/ask from a data centre Gemini accepts.
+# Deploy: cd workers/gemini-proxy && npx wrangler deploy
+# Secrets: GEMINI_API_KEY and FILE_SEARCH_STORE (npx wrangler secret put NAME --name gemini-proxy)
+name = "gemini-proxy"
+main = "index.js"
+compatibility_date = "2026-10-01"
+workers_dev = false
+preview_urls = false
+
+# Gemini rejects some Cloudflare data centres (e.g. Hong Kong) with "User location is not supported".
+# Run next to a US Google region instead.
+[placement]
+region = "gcp:us-central1"
+
+# Turned on once GEMINI_API_KEY is set on this Worker; until then the Pages Function serves /api/ask.
+# routes = [{ pattern = "whatischarlesupto.com/api/*", zone_name = "whatischarlesupto.com" }]

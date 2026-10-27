@@ -6,7 +6,8 @@ Charles Lim's site, served at [whatischarlesupto.com](https://whatischarlesupto.
 - `projects/`: past projects.
 - `assets/`: styles, the chat script, and `marks.js`, which paints the brush marks with [p5.brush](https://github.com/acamposuribe/p5.brush) (vendored in `assets/vendor/`).
 - `content/`: the Markdown documents the chat answers from.
-- `functions/api/ask.js`: the Cloudflare Pages Function behind the chat. It calls Gemini with File Search (RAG) and keeps the API key server-side.
+- `functions/api/ask.js`: the chat handler. It calls Gemini with File Search (RAG) and keeps the API key server-side. It runs as a Pages Function on `*.pages.dev`.
+- `workers/gemini-proxy/`: the same handler as a Worker for `whatischarlesupto.com/api/*`, pinned near a US Google region because Gemini rejects some Cloudflare data centres (Hong Kong, for one). Deploy with `cd workers/gemini-proxy && npx wrangler deploy`.
 - `scripts/upload-corpus.mjs`: uploads `content/` into a Gemini File Search store.
 - `scripts/dev.py`: local preview with a fake `/api/ask`.
 - `scripts/deploy.sh`: deploys the committed site to the Cloudflare Pages project `whatischarlesupto`.
