@@ -49,11 +49,17 @@
     return n;
   };
 
-  // Plain text in, paragraphs and lists out. **bold** is the only inline markup kept.
+  // Plain text in, paragraphs and lists out. **bold** and *italic* are the only inline markup kept.
   function inline(parent, text) {
-    text.split(/\*\*(.+?)\*\*/g).forEach((part, i) => {
-      parent.append(i % 2 ? el('strong', '', part) : document.createTextNode(part));
-    });
+    const re = /\*\*(.+?)\*\*|\*([^*\s][^*]*?)\*/g;
+    let last = 0;
+    let m;
+    while ((m = re.exec(text))) {
+      if (m.index > last) parent.append(document.createTextNode(text.slice(last, m.index)));
+      parent.append(m[1] != null ? el('strong', '', m[1]) : el('em', '', m[2]));
+      last = re.lastIndex;
+    }
+    if (last < text.length) parent.append(document.createTextNode(text.slice(last)));
     return parent;
   }
   function render(answer) {
