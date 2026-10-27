@@ -105,18 +105,29 @@ export async function onRequestPost({ request, env }) {
   if (!question) return reply({ error: 'Ask something first.' }, 400, headers);
   const history = Array.isArray(body.history) ? body.history : [];
 
-  const res = await fetch(API, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
-    body: JSON.stringify({
-      model: env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
-      system_instruction: SYSTEM,
-      input: buildInput(question, history),
-      tools: [{ type: 'file_search', file_search_store_names: [env.FILE_SEARCH_STORE] }],
-      store: false,
-      generation_config: { max_output_tokens: 600 },
-    }),
+  const payload = JSON.stringify({
+    model: env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
+    system_instruction: SYSTEM,
+    input: buildInput(question, history),
+    tools: [{ type: 'file_search', file_search_store_names: [env.FILE_SEARCH_STORE] }],
+    store: false,
+    generation_config: { max_output_tokens: 600 },
   });
+
+  // Gemini sometimes rejects a Cloudflare egress address as "User location is not supported".
+  // It varies per request and fails fast, so a couple of retries usually get through.
+  let res;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    res = await fetch(API, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
+      body: payload,
+    });
+    if (res.status !== 400) break;
+    const text = await res.clone().text();
+    if (!text.includes('location is not supported')) break;
+    console.log('gemini location rejected, attempt', attempt);
+  }
 
   if (!res.ok) {
     console.log('gemini error', res.status, (await res.text()).slice(0, 800));
