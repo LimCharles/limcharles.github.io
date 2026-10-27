@@ -3,11 +3,11 @@
 # Uses a clean copy so local-only folders (design/, .claude/) never get uploaded.
 # Needs `npx wrangler login` once.
 #
-#   scripts/deploy.sh                 # project "portfolio"
+#   scripts/deploy.sh                 # project "whatischarlesupto"
 #   scripts/deploy.sh other-project
 set -euo pipefail
 
-PROJECT="${1:-portfolio}"
+PROJECT="${1:-whatischarlesupto}"
 cd "$(git rev-parse --show-toplevel)"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
