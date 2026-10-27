@@ -9,6 +9,7 @@ Charles Lim's site, served at [whatischarlesupto.com](https://whatischarlesupto.
 - `functions/api/ask.js`: the Cloudflare Pages Function behind the chat. It calls Gemini with File Search (RAG) and keeps the API key server-side.
 - `scripts/upload-corpus.mjs`: uploads `content/` into a Gemini File Search store.
 - `scripts/dev.py`: local preview with a fake `/api/ask`.
+- `scripts/deploy.sh`: deploys the committed site to the Cloudflare Pages project `portfolio`.
 
 No build step. Everything is static except the one function.
 

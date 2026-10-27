@@ -44,10 +44,19 @@ function buildInput(question, history) {
 }
 
 // Map a file_citation annotation to a document slug (vahumana, laile, about, ...).
+// custom_metadata has come back both as a list of {key, string_value} and as a plain object.
 function slugOf(a) {
-  const meta = (a.custom_metadata || []).find(m => m.key === 'slug');
-  if (meta && meta.string_value) return meta.string_value;
-  const name = a.file_name || a.source || a.document_uri || '';
+  const meta = a.custom_metadata;
+  let slug = null;
+  if (Array.isArray(meta)) {
+    const m = meta.find(m => m && m.key === 'slug');
+    slug = m && (m.string_value || m.stringValue);
+  } else if (meta && typeof meta === 'object') {
+    const v = meta.slug;
+    slug = typeof v === 'string' ? v : v && (v.string_value || v.stringValue);
+  }
+  if (typeof slug === 'string' && slug) return slug;
+  const name = String(a.file_name || a.source || a.document_uri || '');
   const m = name.match(/([a-z0-9-]+)\.md\b/i);
   return m ? m[1].toLowerCase() : null;
 }
@@ -61,9 +70,14 @@ function parse(data) {
       if (c.type !== 'text' || !c.text) continue;
       texts.push(c.text);
       for (const a of c.annotations || []) {
-        if (a.type !== 'file_citation') continue;
-        const slug = slugOf(a);
-        if (slug) sources.add(slug);
+        if (!a || a.type !== 'file_citation') continue;
+        try {
+          const slug = slugOf(a);
+          if (slug) sources.add(slug);
+        } catch (err) {
+          // A citation we can't read shouldn't cost the visitor the answer.
+          console.log('unreadable citation', JSON.stringify(a).slice(0, 300));
+        }
       }
     }
   }
